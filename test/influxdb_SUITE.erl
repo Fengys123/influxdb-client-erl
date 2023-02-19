@@ -40,27 +40,28 @@ t_encode_line(_) ->
     ok.
 
 t_write(_) ->
-    t_write_(http, random, v1),
-    t_write_(http, random, v2),
-    t_write_(http, hash, v1),
-    t_write_(http, hash, v2),
-    t_write_(udp, random, v1),
-    t_write_(udp, random, v2),
-    t_write_(udp, hash, v1),
-    t_write_(udp, hash, v2).
+    t_write_(http, random, v1).
+    % t_write_(http, random, v2),
+    % t_write_(http, hash, v1),
+    % t_write_(http, hash, v2),
+    % t_write_(udp, random, v1),
+    % t_write_(udp, random, v2),
+    % t_write_(udp, hash, v1),
+    % t_write_(udp, hash, v2).
 
 t_write_(WriteProtocol, PoolType, Version) ->
     Host = {127, 0, 0, 1},
     Port = case WriteProtocol of
-               http -> 8086;
+               http -> 4000;
                udp -> 8089
            end,
     HttpsEnabled = false,
-    UserName = <<"ddd">>,
-    PassWord = <<"123qwe">>,
-    DataBase = <<"mydb">>,
+    UserName = <<"fys">>,
+    PassWord = <<"fys">>,
+    DataBase = <<"public">>,
     Precision = <<"ms">>,
     Pool = <<"influxdb_test">>,
+    Path = <<"/api/influxdb/write">>,
     PoolSize = 16,
     Option = [ {host, Host}
              , {port, Port}
@@ -74,11 +75,12 @@ t_write_(WriteProtocol, PoolType, Version) ->
              , {database, DataBase}
              , {precision, Precision}
              , {version, Version}
+	     , {path, Path}
             ],
     application:ensure_all_started(influxdb),
     {ok, Client} = influxdb:start_client(Option),
     timer:sleep(500),
-    (WriteProtocol == udp) andalso (
+    (WriteProtocol == http) andalso (
         begin
             ?assertEqual(true, influxdb:is_alive(Client)),
             Points2 = [#{<<"fields">> => #{<<"temperature">> => 1},

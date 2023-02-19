@@ -203,7 +203,7 @@ qs_list(v2) ->
         {"precision", precision}
     ].
 
-path(v1) -> "/write";
+path(v1) -> "/v1/influxdb/write";
 path(v2) -> "/api/v2/write".
 
 header(v1, _) ->

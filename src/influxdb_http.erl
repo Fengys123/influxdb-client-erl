@@ -46,7 +46,7 @@ is_alive(v2, Client = #{headers := Headers}) ->
         false
     end;
 is_alive(v1, Client) ->
-    Path = "/ping",
+    Path = "/v1/influxdb/ping",
     Headers = [{<<"verbose">>, <<"true">>}],
     try
         Worker = pick_worker(Client, ignore),
