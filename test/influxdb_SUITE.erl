@@ -61,7 +61,6 @@ t_write_(WriteProtocol, PoolType, Version) ->
     DataBase = <<"public">>,
     Precision = <<"ms">>,
     Pool = <<"influxdb_test">>,
-    Path = <<"/api/influxdb/write">>,
     PoolSize = 16,
     Option = [ {host, Host}
              , {port, Port}
@@ -75,7 +74,6 @@ t_write_(WriteProtocol, PoolType, Version) ->
              , {database, DataBase}
              , {precision, Precision}
              , {version, Version}
-	     , {path, Path}
             ],
     application:ensure_all_started(influxdb),
     {ok, Client} = influxdb:start_client(Option),
